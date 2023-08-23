@@ -4,12 +4,13 @@ import {
   Text,
   TextStyle,
   TouchableOpacity,
+  TouchableOpacityProps,
   ViewStyle,
 } from 'react-native';
 import React from 'react';
 import {Colors} from '../../constants/Colors';
 
-interface ICustomButton {
+interface ICustomButton extends TouchableOpacityProps {
   title?: string;
   buttonClassName?: string;
   textClassName?: string;
@@ -24,9 +25,11 @@ export default function Button(props: ICustomButton) {
     textClassName = '',
     buttonStyle,
     textStyle,
+    onPress,
   } = props;
   return (
     <TouchableOpacity
+      onPress={onPress}
       className={`w-full h-14 rounded-full justify-center items-center ${buttonClassName}`}
       style={{backgroundColor: Colors.primary, ...(buttonStyle as ViewStyle)}}>
       <Text

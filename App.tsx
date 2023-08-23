@@ -10,6 +10,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { ContextProvider } from './src/context/Authentication';
 import { MainNavigation } from './src/navigation/MainNavigation';
+
 function App(): JSX.Element {
   return (
     <NavigationContainer>
