@@ -1,8 +1,6 @@
-import {NavigationProp} from '@react-navigation/native';
+import {NavigationMainScreenStack} from '../../navigation/interface';
 
-export interface ILoginProps {
-  navigation: any;
-}
+export interface ILoginProps extends NavigationMainScreenStack<'LOGIN'> {}
 
 export interface ILoginState {
   email: string;

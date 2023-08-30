@@ -1,8 +1,8 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Login} from '../screens/Login/Login';
-import {Profile} from '../screens/Profile/Profile';
-import {MainNavigationRoutes} from './NavigationItems';
+import {MainNavigationRoutes} from './interface';
+import { AppNavigation } from './AppNavigation';
 
 const Stack = createNativeStackNavigator<MainNavigationRoutes>();
 
@@ -18,8 +18,8 @@ export function MainNavigation() {
         }}
       />
       <Stack.Screen
-        name="PROFILE"
-        component={Profile}
+        name="HOME"
+        component={AppNavigation}
         options={{
           orientation: 'portrait',
           headerShown: false,

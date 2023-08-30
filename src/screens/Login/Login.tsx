@@ -5,18 +5,14 @@ import Button from '../../components/common/Button';
 import Typography from '../../components/common/Typography';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ILoginProps, ILoginState} from './Interface';
-import {useNavigation} from '@react-navigation/native';
-import {MainNavigationRoutes} from '../../navigation/NavigationItems';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 const initialState: ILoginState = {
   email: '',
   password: '',
   isShowPassword: false,
 };
-export const Login = (_props: ILoginProps) => {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<MainNavigationRoutes>>();
+export const Login = (props: ILoginProps) => {
+  const {navigation} = props;
   const [state, setState] = useState<ILoginState>(initialState);
 
   const stateChangeHandler = (
@@ -66,7 +62,11 @@ export const Login = (_props: ILoginProps) => {
           </View>
         </View>
         <Button
-          onPress={() => navigation.navigate('PROFILE')}
+          onPress={() =>
+            navigation.navigate('HOME', {
+              screen: 'PROFILE',
+            })
+          }
           title="Sign in"
           buttonClassName="mt-3 ml-2"
         />

@@ -25,13 +25,16 @@ export default function Button(props: ICustomButton) {
     textClassName = '',
     buttonStyle,
     textStyle,
-    onPress,
+    ...restData
   } = props;
   return (
     <TouchableOpacity
-      onPress={onPress}
+      {...restData}
       className={`w-full h-14 rounded-full justify-center items-center ${buttonClassName}`}
-      style={{backgroundColor: Colors.primary, ...(buttonStyle as ViewStyle)}}>
+      style={{
+        backgroundColor: props.disabled ? Colors.quaternary : Colors.primary,
+        ...(buttonStyle as ViewStyle),
+      }}>
       <Text
         style={{color: Colors.secondary, ...(textStyle as TextStyle)}}
         className={`text-xl ${textClassName}`}>
