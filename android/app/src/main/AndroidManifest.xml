@@ -26,6 +26,6 @@
       <!-- You will only need to add this meta-data tag, but make sure it's a child of application -->
       <meta-data
       android:name="com.google.android.geo.API_KEY"
-      android:value="AIzaSyB6BXTMFDPPJpxqEcROOyuj7nzx_OrrGkk"/>
+      android:value="cari sendiri api key dari google maps"/>
       </application>
 </manifest>
