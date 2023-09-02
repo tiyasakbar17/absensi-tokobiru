@@ -1,5 +1,5 @@
 import {View, SafeAreaView} from 'react-native';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {IDashboardProps} from './Interface';
 import {Colors} from '../../constants/Colors';
 import Typography from '../../components/common/Typography';
@@ -7,8 +7,9 @@ import Button from '../../components/common/Button';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {AbsenseBottomSheet} from '../../components/dasboard/BottomSheet';
 
-export const Dashboard = (_props: IDashboardProps) => {
+export const Dashboard = ({navigation}: IDashboardProps) => {
   const rbSheetRef = useRef<RBSheet>(null);
+
   return (
     <SafeAreaView className="p-5 pb-0">
       <View
@@ -62,7 +63,7 @@ export const Dashboard = (_props: IDashboardProps) => {
           className="absolute z-30 rounded-full h-72 w-72 right-[-90px] top-[30px]"
           style={{backgroundColor: Colors.primary}}></View>
       </View>
-      <AbsenseBottomSheet rbSheetRef={rbSheetRef} />
+      <AbsenseBottomSheet navigation={navigation} rbSheetRef={rbSheetRef} />
     </SafeAreaView>
   );
 };

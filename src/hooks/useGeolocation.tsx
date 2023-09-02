@@ -8,14 +8,14 @@ interface IUseGeolocation {
 }
 
 export interface ILocation {
-  lon: string;
-  lat: string;
+  lon: number;
+  lat: number;
 }
 
 export const useGeolocation: () => IUseGeolocation = () => {
   const [state, setState] = useState<ILocation>({
-    lat: '',
-    lon: '',
+    lat: 0,
+    lon: 0,
   });
   async function checkPermission() {
     const permissionGranted = await PermissionsAndroid.check(
@@ -51,8 +51,8 @@ export const useGeolocation: () => IUseGeolocation = () => {
       return Alert.alert('Cheating', 'No fake GPS allowed');
     }
     setState(() => ({
-      lon: coords.longitude.toString(),
-      lat: coords.latitude.toString(),
+      lon: coords.longitude,
+      lat: coords.latitude,
     }));
   };
 

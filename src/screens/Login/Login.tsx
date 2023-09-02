@@ -1,19 +1,25 @@
 import {Image, SafeAreaView, StyleSheet, TextInput, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Colors} from '../../constants/Colors';
 import Button from '../../components/common/Button';
 import Typography from '../../components/common/Typography';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ILoginProps, ILoginState} from './Interface';
+import {useAuthContext} from '../../hooks/useAuthContext';
 
 const initialState: ILoginState = {
   email: '',
   password: '',
   isShowPassword: false,
 };
+
 export const Login = (props: ILoginProps) => {
   const {navigation} = props;
   const [state, setState] = useState<ILoginState>(initialState);
+  const {
+    login,
+    state: {isFetching},
+  } = useAuthContext();
 
   const stateChangeHandler = (
     name: keyof ILoginState,
@@ -24,6 +30,18 @@ export const Login = (props: ILoginProps) => {
       [name]: value,
     }));
   };
+
+  async function loginHandler() {
+    const success = await login(state.email, state.password);
+    if (!success) return;
+    navigation.navigate('HOME', {
+      screen: 'PROFILE',
+    });
+  }
+
+  const disabledButton = useMemo(() => {
+    return !state.email || !state.password || isFetching;
+  }, [state, isFetching]);
 
   return (
     <SafeAreaView
@@ -62,13 +80,10 @@ export const Login = (props: ILoginProps) => {
           </View>
         </View>
         <Button
-          onPress={() =>
-            navigation.navigate('HOME', {
-              screen: 'PROFILE',
-            })
-          }
+          onPress={loginHandler}
           title="Sign in"
           buttonClassName="mt-3 ml-2"
+          disabled={disabledButton}
         />
       </View>
       <View className="w-full flex-row justify-end mt-2">

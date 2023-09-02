@@ -6,17 +6,22 @@ import Button from '../common/Button';
 import {useGeolocation} from '../../hooks/useGeolocation';
 import {Colors} from '../../constants/Colors';
 import {BottomSheetProps, IFormData} from './Interface';
+import {useAbsenContext} from '../../hooks/useAbsenContext';
 
 const initialState: IFormData = {
   coord: {
-    lat: '',
-    lon: '',
+    lat: 0,
+    lon: 0,
   },
   details: '',
 };
-export const AbsenseBottomSheet = ({rbSheetRef}: BottomSheetProps) => {
+export const AbsenseBottomSheet = ({
+  rbSheetRef,
+  navigation,
+}: BottomSheetProps) => {
   const [form, setForm] = useState<IFormData>(initialState);
-  const {getCurrentLocation, state} = useGeolocation();
+  const {state} = useGeolocation();
+  const {sendAbsen} = useAbsenContext();
 
   const changeHandler = (detail: string) => {
     setForm(prev => ({
@@ -24,6 +29,13 @@ export const AbsenseBottomSheet = ({rbSheetRef}: BottomSheetProps) => {
       details: detail,
     }));
   };
+
+  async function submitForm() {
+    const response = await sendAbsen(form.details, form.coord);
+    if (!response) return;
+    setForm(initialState);
+    rbSheetRef.current?.close();
+  }
 
   useEffect(() => {
     if (!state.lat || !state.lon) return;
@@ -37,6 +49,11 @@ export const AbsenseBottomSheet = ({rbSheetRef}: BottomSheetProps) => {
       Boolean(form.coord.lon)
     );
   }, [form]);
+
+  function navigateToMaps() {
+    rbSheetRef.current?.close();
+    navigation.push('MAPS');
+  }
 
   return (
     <RBSheet
@@ -78,16 +95,18 @@ export const AbsenseBottomSheet = ({rbSheetRef}: BottomSheetProps) => {
             }}
             textStyle={{color: Colors.primary}}
             textClassName="text-sm"
-            onPress={() =>
+            onPress={() => {
               Alert.alert(
                 'Location',
                 `Lon: ${form.coord.lon}\nLat: ${form.coord.lat}`,
-              )
-            }
+              );
+              navigateToMaps();
+            }}
           />
         </View>
         <View className="flex-1 justify-end">
           <Button
+            onPress={submitForm}
             title="Submit"
             buttonClassName="place-self-end rounded-[10px]"
             disabled={disabledSubmit}

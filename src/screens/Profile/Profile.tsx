@@ -1,11 +1,27 @@
 import {Image, SafeAreaView, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Colors} from '../../constants/Colors';
 import Typography from '../../components/common/Typography';
 import {FlatList} from 'react-native';
 import {IProfileProps} from './interface';
+import {useAuthContext} from '../../hooks/useAuthContext';
+import {useAbsenContext} from '../../hooks/useAbsenContext';
+import {HistoryCard} from '../../components/profile/HistoryCard';
 
 export const Profile = (_props: IProfileProps) => {
+  const {
+    absenState: {histories, isFetching},
+    getHistory,
+  } = useAbsenContext();
+  const {
+    state: {
+      mothlySummary: {alfa, attendance, leave},
+    },
+  } = useAuthContext();
+
+  useEffect(() => {
+    getHistory();
+  }, []);
   return (
     <SafeAreaView
       className="flex-1 p-5 pb-0"
@@ -43,7 +59,7 @@ export const Profile = (_props: IProfileProps) => {
               textColor={Colors.secondary}
               classNameAdd="font-black"
               size="text-lg">
-              20
+              {attendance}
             </Typography>
           </View>
           <View className="items-center col-span-2 w-1/3">
@@ -52,7 +68,7 @@ export const Profile = (_props: IProfileProps) => {
               textColor={Colors.secondary}
               classNameAdd="font-black"
               size="text-lg">
-              0
+              {alfa}
             </Typography>
           </View>
           <View className="items-center col-span-2 w-1/3">
@@ -61,7 +77,7 @@ export const Profile = (_props: IProfileProps) => {
               textColor={Colors.secondary}
               classNameAdd="font-black"
               size="text-lg">
-              10
+              {leave}
             </Typography>
           </View>
         </View>
@@ -82,36 +98,15 @@ export const Profile = (_props: IProfileProps) => {
         </View>
       </View>
       <FlatList
-        data={[1, 2, 3]}
+        refreshing={isFetching}
+        onRefresh={getHistory}
+        data={histories ?? []}
         className="mt-5"
         contentContainerStyle={{
           gap: 15,
           paddingBottom: 20,
         }}
-        renderItem={({item}) => (
-          <View className="w-full flex-row justify-between">
-            <Image
-              source={{
-                uri: 'https://picsum.photos/300',
-              }}
-              className="w-3/5 h-32"
-            />
-            <View className="w-2/5 pl-2 justify-between">
-              <Typography
-                size="text-lg"
-                classNameAdd="font-black"
-                textColor={Colors.primary}>
-                Tiyas
-              </Typography>
-              <Typography size="text-sm" textColor={Colors.quaternary}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              </Typography>
-              <Typography size="text-xs" classNameAdd="text-green-500">
-                On time | Late | On Leave
-              </Typography>
-            </View>
-          </View>
-        )}
+        renderItem={({item}) => <HistoryCard item={item} />}
       />
     </SafeAreaView>
   );

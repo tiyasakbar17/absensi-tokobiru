@@ -8,6 +8,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 export type MainNavigationRoutes = {
   LOGIN: undefined;
   HOME: NavigatorScreenParams<AppNavigationRoutes>;
+  MAPS: undefined;
 };
 
 export type AppNavigationRoutes = {
